@@ -1,10 +1,9 @@
 # Default ignored files
 /shelf/
-/workspace.xml
-/HelloTry.iml
-/misc.xml
-/modules.xml
-/inspectionProfiles/profiles_settings.xml
-/vcs.xml
 /config.ini
-
+/.idea/HelloTry.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/vcs.xml
+/.idea/workspace.xml
