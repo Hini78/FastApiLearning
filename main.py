@@ -1,8 +1,32 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
 from models import *
+from models.Feedback import FeedBack
 from models.agedUser import AgedUser
+import psycopg2
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+dbname = config['database']['dbname']
+user = config['database']['user']
+password = config['database']['password']
+host = config['database']['host']
+port = config['database']['port']
+
+connection = psycopg2.connect(
+    dbname=dbname,
+    user=user,
+    password=password,
+    host=host,
+    port=port
+)
+
+connection.autocommit = True
+cursor = connection.cursor()
+#just for test
+#cursor.execute("INSERT INTO feedback.user_message(name, message) VALUES ('John Doe', 'testin db')")
 
 app = FastAPI()
 user = User(name = "John Doe", id =1)
@@ -37,6 +61,10 @@ async def read_user(user_id: int):
 async def read_user(start: int = 0,end: int = 0):
     return list(fake_users.values())[start:end]
 
+@app.post("/feedback")
+async def feedback(fb: FeedBack):
+    cursor.execute("INSERT INTO feedback.user_message(name, message) VALUES(%s, %s)", (fb.name, fb.message))
+    return {"message": "feedback sent ᗜ˰ᗜ"}
 
 @app.post("/aged_user")
 async def aged_user_response(user: AgedUser):
